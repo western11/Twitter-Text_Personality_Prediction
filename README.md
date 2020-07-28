@@ -2,5 +2,5 @@
 Predict big 5 personality traits and myer briggs personality types based on user tweets
 
 
-Add soon
-Version 0.001
+Add version 0.015
+https://jojoecp.shinyapps.io/Twitter-text_personality_prediction/
