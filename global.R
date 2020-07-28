@@ -145,7 +145,7 @@ get_personality <- function(x){
 # Run App
 source("ui.R")
 source("server.R")
-shinyApp(ui,server)
+shinyApp(ui,server,)
 
 
 

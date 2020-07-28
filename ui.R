@@ -14,7 +14,13 @@ ui <- dashboardPage(
   ),
   
   dashboardBody(tags$head(tags$style(HTML('.box {margin: 3px;}
-                                          div.col-sm-12 {padding:1px;}'))),
+                                          div.col-sm-12 {padding:1px;}'),
+                                     HTML(".icon_size { font-size: 45px; }"),
+                                     HTML(".icon-large {bottom: -15px;}"),
+                                     HTML(".inner {height: 65px;}"),
+                                     HTML(".col-sm-6:nth-child(1) {padding-right:3px; height: 75px;}"),
+                                     HTML(".col-sm-6+ .col-sm-6 {padding-left:3px; height: 75px;}"),
+                                     HTML("#shiny-tab-about a {color: #f7f7f7;"))),
     shinyjs::useShinyjs(),
     tabItems(
       tabItem(tabName = "twitter",
@@ -54,17 +60,24 @@ ui <- dashboardPage(
       
       tabItem(tabName = "text"),
       tabItem(tabName = "about",
-              div(h2("This tab is for testing layout",align = "center")),
-              br(),
               fluidRow(
                 column(width = 4,
-                       fluidRow(box(width = 12,height = 300,title = "box1")),
-                       fluidRow(box(width = 12, height = 200,title = "box4"))),
-                column(width = 5,
-                       box(width = 12,height = 510, title = "box2")),
-                column(width = 3,
-                       fluidRow(box(width = 12,height = 300, title = "box3")),
-                       fluidRow(box(width = 12, height = 200, title = "box5"))))
+                       box(width = 12,status = "info",
+                           div(h3("Author",align = "center")),
+                           div(align = "center",img(src = "profile_icon.png",height = 80, width = 80)),
+                           column(width = 12,
+                                  div(h5("Joe Cristian is a junior data scientist at Algoritma Data Science Education Center located in Jakarta, Indonesia. Have a degree in Management Business Telecomuncation and Informatics and are interested in social computing or human behaviour based data science projects ever since"))),
+                           fluidRow(valueBox(value = tags$p(tags$a(href = "https://github.com/western11/Twitter-Text_Personality_Prediction","Github"),style = "font-size: 80%;"),
+                                             icon = icon("github",class = "icon_size"),color = "olive",subtitle = HTML("&nbsp;"),width = 6),
+                                    valueBox(value = tags$p(tags$a(href = "https://twitter.com/JoeChristianP","Twitter"),style = "font-size: 80%;"),
+                                             icon = icon("twitter",class = "icon_size"),color = "teal",subtitle = HTML("&nbsp;"),width = 6)
+                                    ),
+                           div(h4("This ShinyApp is build with guidance by",align = "center")),
+                           div(align = "center",tags$a(href = "https://algorit.ma/",tags$img(src = "algo_logo.png",height = 56, width = 212)))
+                           )),
+                column(width = 8,
+                       div(h2("What WebApp is this?")))
+              )
               ),
       tabItem(tabName = "space",
               div(h2(textOutput(outputId = "pname"),align = "center")),
@@ -98,7 +111,7 @@ ui <- dashboardPage(
               tags$hr(),
               div(h2(htmlOutput("more")),align = "center"),
               fluidRow(
-                box(width = 6,height = 1400, status = "primary",
+                box(width = 6,height = 1370, status = "primary",
                     column(width = 11,
                            div(h3(strong("Personality Traits Scores"))),
                            p("This Big Five assessment measures your scores on five major dimensions of personality: Openness, Conscientiousness, Extraversion, Agreeableness, and Neuroticism (sometimes abbreviated OCEAN). It is important to note that each of the five personality factors represents a range between two extremes. For example, extraversion represents a continuum between extreme extraversion and extreme introversion. In the real world, most people lie somewhere in between the two polar ends of each dimension."),
@@ -126,7 +139,7 @@ ui <- dashboardPage(
                            #p("This trait can be thought of as an alarm system. People experience negative emotions as a sign that something is wrong in the world. You may be in danger, so you feel fear. Or you may have done something morally wrong, so you feel guilty. However, not everyone has the same reaction to a given situation. High Neuroticism scorers are more likely to react to a situation with fear, anger, sadness, and the like. Low Neuroticism scorers are more likely to brush off their misfortune and move on.")
                            )
                     ),
-                box(width = 6,height = 1400,status = "primary",
+                box(width = 6,height = 1370,status = "primary",
                     column(width = 11,
                            div(h3(strong("Myer-Briggs Type Indicator (MBTI)"))),
                            p("The MBTI is an introspective self-report questionnaire indicating differing psychological preferences in how people perceive the world and make decisions. The MBTI is based on the conceptual theory proposed by Swiss psychiatrist Carl Jung, who had speculated that people experience the world using four principal psychological functions – sensation, intuition, feeling, and thinking – and that one of these four functions is dominant for a person most of the time. The four categories are Introversion/Extraversion, Sensing/Intuition, Thinking/Feeling, Judging/Perception. Each person is said to have one preferred quality from each category, producing 16 unique types."),
