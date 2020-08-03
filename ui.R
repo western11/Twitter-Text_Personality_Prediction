@@ -15,12 +15,13 @@ ui <- dashboardPage(
   
   dashboardBody(tags$head(tags$style(HTML('.box {margin: 3px;}
                                           div.col-sm-12 {padding:1px;}'),
-                                     HTML(".icon_size { font-size: 45px; }"),
+                                     HTML(".icon_size { font-size: 38px; }"),
                                      HTML(".icon-large {bottom: -15px;}"),
-                                     HTML(".inner {height: 65px;}"),
+                                     HTML(".inner {height: 65px;}"), 
                                      HTML(".col-sm-6:nth-child(1) {padding-right:3px; height: 75px;}"),
                                      HTML(".col-sm-6+ .col-sm-6 {padding-left:3px; height: 75px;}"),
-                                     HTML("#shiny-tab-about a {color: #f7f7f7;"))),
+                                     HTML("hr+ .row .col-sm-12 { padding-left: 12px; }"),
+                                     HTML(".inner a {color: #f7f7f7;"))),
     shinyjs::useShinyjs(),
     tabItems(
       tabItem(tabName = "twitter",
@@ -67,17 +68,30 @@ ui <- dashboardPage(
                            div(align = "center",img(src = "profile_icon.png",height = 80, width = 80)),
                            column(width = 12,
                                   div(h5("Joe Cristian is a junior data scientist at Algoritma Data Science Education Center located in Jakarta, Indonesia. Have a degree in Management Business Telecomuncation and Informatics and are interested in social computing or human behaviour based data science projects ever since"))),
-                           fluidRow(valueBox(value = tags$p(tags$a(href = "https://github.com/western11/Twitter-Text_Personality_Prediction","Github"),style = "font-size: 80%;"),
+                           fluidRow(valueBox(value = tags$p(tags$a(href = "https://github.com/western11/Twitter-Text_Personality_Prediction","Github"),style = "font-size: 67%;"),
                                              icon = icon("github",class = "icon_size"),color = "olive",subtitle = HTML("&nbsp;"),width = 6),
-                                    valueBox(value = tags$p(tags$a(href = "https://twitter.com/JoeChristianP","Twitter"),style = "font-size: 80%;"),
+                                    valueBox(value = tags$p(tags$a(href = "https://twitter.com/JoeChristianP","Twitter"),style = "font-size: 67%;"),
                                              icon = icon("twitter",class = "icon_size"),color = "teal",subtitle = HTML("&nbsp;"),width = 6)
                                     ),
                            div(h4("This ShinyApp is build with guidance by",align = "center")),
                            div(align = "center",tags$a(href = "https://algorit.ma/",tags$img(src = "algo_logo.png",height = 56, width = 212)))
                            )),
                 column(width = 8,
-                       div(h2("What WebApp is this?")))
-              )
+                       column(width = 11,
+                              div(h2(strong("What WebApp is this?"))),
+                              p("There are lots of academic publications that prove human personality can be predicted by their writings,",tags$a(href="https://ieeexplore.ieee.org/abstract/document/7436992","this "),"and ",tags$a(href="https://link.springer.com/article/10.1007/s10489-018-1212-4","this"), " for example. This webapp is built to predict Big 5 Personality Traits and Myer-Briggs Type Indicator (MBTI) based on Twitter' user tweets. The main objective of this project is to help organizations, especially HR department, to understand people' personalities based on what they write on social media. It surely can help them in the filtering process before recruiting a new employee or member. This project is open to public in order to 'make it perfect', i believe with more input from the community can make the model predictions better and more precise."),
+                              div(h2(strong("How it works?"))),
+                              p("First we take user' tweets (not including retweets) using", tags$a(href="https://developer.twitter.com/en"," Twtter rest API "),"and clean the text. We only use english text because the only available personality-text dataset is written in english. The final step on the text cleaning process is only to use selected words that match the prediction model (approximately 900+ words). We use classification method to predict the MBTI, one model for each traits (so there are 4 binary classification model for MBTI). And regression method to predict the 5 personality traits score, one model for each traits (so there are 5 regression models for big 5 personality traits). Every model using Random Forest Algorithm with different parameter and performance (see below). The output then visualized and the final report is generated based on the output, both 5 personlity traits and the MBTI."))
+                       )
+                ),
+              tags$hr(),
+              fluidRow(
+                column(width = 12,
+                       div(h2(strong("How is the model' performance?"))),
+                       column(width = 6, plotlyOutput(outputId = "mbti_eval")),
+                       column(width = 6,plotlyOutput(outputId = "person_eval"))
+                       )
+                )
               ),
       tabItem(tabName = "space",
               div(h2(textOutput(outputId = "pname"),align = "center")),

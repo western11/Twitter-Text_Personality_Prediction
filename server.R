@@ -271,5 +271,45 @@ server <- function(input,output,session){
     
   })
   
+  output$mbti_eval <- renderPlotly({
+    plot_mbti_eval <- eval_mbti %>% pivot_longer(cols = c("Accuracy","Sensitivity","Specificity","Recall","F1")) %>%
+      mutate(type = as.factor(type),name = as.factor(name),
+             text = paste(name,":",round(value*100,3),"%")) %>%
+      ggplot(aes(x = type, y = value*100, text = text)) +
+      geom_col(aes(fill = name), position = "dodge", width = 0.7) +
+      scale_y_continuous(breaks = seq(0,100,20),
+                         labels = paste(seq(0,100,20),"%")) +
+      labs(title = "Model performance for MBTI prediction",
+           fill = "Metrics",
+           x = "MBTI traits",
+           y = "") + theme_minimal()
+    
+    ggplotly(plot_mbti_eval,tooltip = "text") %>%
+      layout(legend = list(orientation = "h", x = 0.24, y = -0.2)) %>%
+      config(displayModeBar = F)
+    
+  })
+  
+  output$person_eval <- renderPlotly({
+    eval_person <- eval_person %>% mutate(metrics = rownames(eval_person))
+    
+    plot_person_eval <- eval_person %>% 
+      pivot_longer(cols = c("EXT","AGR","CON","NEU","OPN")) %>%
+      mutate(metrics = as.factor(metrics), name = as.factor(name),
+             text = ifelse(metrics == "MAPE",
+                           paste(name,":",round(value*100,3),"%"),
+                           paste(name,":",round(value,3)))) %>%
+      ggplot(aes(x = value, y = name, text = text)) +
+      geom_col(aes(fill = metrics),position = "dodge",width = 0.7) +
+      facet_wrap(~metrics,scales = "free_x",nrow = 2) + theme_minimal() +
+      labs(title = "Model performance for 5 personality traits prediction",
+           y = "Personality traits \n", x="",fill = "Metrics")
+    
+    ggplotly(plot_person_eval,tooltip = "text") %>%
+      layout(legend = list(orientation = "h", x = 0.27, y = -0.2)) %>%
+      config(displayModeBar = F)
+    
+  })
+  
 }
 

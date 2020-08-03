@@ -38,6 +38,10 @@ mod.rf.opn <- readRDS("data/mod_opn.rds")
 names_traits <- readRDS("data/names_trait.rds")
 names_mbti <- readRDS("data/names_mbti.rds")
 
+# Model evaluation
+eval_mbti <- readRDS("data/mbti_eval.rds")
+eval_person <- readRDS("data/person_eval.rds")
+
 # function twutter text cleaner
 textcleaner_twt <- function(x){
   x <- as.character(x)
